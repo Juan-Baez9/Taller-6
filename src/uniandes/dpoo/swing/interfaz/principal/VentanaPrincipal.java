@@ -86,7 +86,11 @@ public class VentanaPrincipal extends JFrame
      */
     public void mostrarVentanaMapa( )
     {
-        // TODO completar mostrarVentanaMapa
+    	if( ventanaMapa == null || !ventanaMapa.isVisible( ) )
+        {
+            ventanaMapa = new VentanaMapa( this, mundo.getRestaurantes( true ) );
+            ventanaMapa.setVisible( true );
+        }
     }
 
     /**
@@ -99,7 +103,14 @@ public class VentanaPrincipal extends JFrame
      */
     public void agregarRestaurante( String nombre, int calificacion, int x, int y, boolean visitado )
     {
-        // TODO completar agregarRestaurante
+    	Restaurante restaurante = new Restaurante( nombre, calificacion, x, y, visitado );
+        mundo.agregarRestaurante( restaurante );
+        actualizarRestaurantes( );
+
+        if( ventanaMapa != null && ventanaMapa.isVisible( ) )
+        {
+            ventanaMapa.actionPerformed( new java.awt.event.ActionEvent( this, 0, "TODOS" ) );
+        }
     }
 
     /**
@@ -120,7 +131,13 @@ public class VentanaPrincipal extends JFrame
     private void actualizarRestaurantes( )
     {
         List<Restaurante> todos = this.mundo.getRestaurantes( true );
-        // TODO completar actualizarRestaurantes
+        pLista.actualizarRestaurantes( todos );
+        if( !todos.isEmpty( ) )
+        {
+            Restaurante ultimo = todos.get( todos.size( ) - 1 );
+            pLista.seleccionarRestaurante( ultimo );
+            pDetalles.actualizarRestaurante( ultimo );
+        }    
     }
 
     /**
